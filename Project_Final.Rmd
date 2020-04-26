@@ -16,7 +16,7 @@ library(ggplot2)
 library(tidyr)
 library(dplyr)
 library(DataComputing)
-library(maps)
+#library(maps)
 ```
 
 ```{r}
@@ -32,6 +32,7 @@ olympicslist <- olympics %>%
   read_html() %>%
   html_nodes(css = "table") %>%
   html_table(fill = TRUE)
+
 ```
 
 ### Links to data sources: 
@@ -105,5 +106,78 @@ ggplot(data=OlympicMedals,aes(x=reorder(Nation,Total),y=Total,order=reorder(Gold
 Here is another chart regarding the total count of Olympic medals with a fill order of gold medals. Similar start, and also plan to join the two tables together to get a grand total of medals. 
 
 To conclude, This feels like a good starting point to what I can investigate on. Within the next few weeks, I plan to construct various plots, such as a scatterplot of individual and team medals within various years to eventually find some kind of trend or pattern of which country has dominated the sport of fencing over the sport's history.
+
+
+
+##Data Wrangling 
+
+```{r}
+View(Sabers)
+View(OlympicMedals)
+View(Olympic_S_Team)
+View(medalranks)
+View(Olympic_Saber)
+```
+
+
+- (A) General Data Wrangling: 
+
+
+```{r}
+
+```
+
+
+- (B) Join Operation: 
+
+
+```{r}
+
+```
+
+
+- (C) Spread or Gather: 
+
+
+```{r}
+
+```
+
+
+- (D) Reg Ex: 
+
+
+```{r}
+
+```
+
+
+- (E) Reduction/Transformation: 
+
+
+```{r}
+
+```
+
+
+
+
+##Data Visualization
+
+- NOTE to SAM: We need to use these letters for these steps for each line in order to denote the step we are undergoing 
+
+(A) .Rmd Line number(s) for use of mulitple different geoms:  
+
+(B) .Rmd Line number(s) for use of multiple aesthetics:  
+
+(C) .Rmd Line number(s) for use of layered graphics:  
+
+(D) .Rmd Line number(s) for use of leaflet maps:  
+
+(E) .Rmd Line number(s) for use of decision tree or dendogram results:    
+
+
+
+
 
 
