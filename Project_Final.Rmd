@@ -1,6 +1,6 @@
 ---
 title: "Final Project - Fencing Champions"
-author: "Samuel Cohen"
+author: "Samuel Cohen, Alex Schweizer"
 date: "4/6/20"
 output: html_notebook
 ---
@@ -16,6 +16,7 @@ library(ggplot2)
 library(tidyr)
 library(dplyr)
 library(DataComputing)
+library(tidyverse)
 #library(maps)
 ```
 
@@ -32,7 +33,6 @@ olympicslist <- olympics %>%
   read_html() %>%
   html_nodes(css = "table") %>%
   html_table(fill = TRUE)
-
 ```
 
 ### Links to data sources: 
@@ -137,7 +137,10 @@ Total_FIE <- medalranks %>% select(Nation, Total)
 
 
 ```{r}
+JoinMedal <- medalranks %>% select(Rank, Nation)
+Joined <- JoinMedal %>% left_join(OlympicMedals %>% select(Rank, Nation), by= "Rank") 
 
+View(Joined)
 ```
 
 
@@ -153,10 +156,24 @@ Total_FIE <- medalranks %>% select(Nation, Total)
 
 
 ```{r}
-#Olympic_Saber %>% group_by(Games) %>% mutate(gsub(^[....] ))
+#
+Details <- Olympic_Saber %>% mutate(New= gsub("details", "", Games))
 
-abbreviation <- OlympicMedals %>% mutate(gsub("//(...//)", "", Nation))  
-abbreviation
+#  
+Years <- Details %>% extractMatches("([0-9][0-9][0-9][0-9])", New) %>% mutate(Years= match1) %>% select(Games, Years)
+
+#
+Locations <- Details %>% mutate(Locations = gsub("[0-9][0-9][0-9][0-9]", "", New))
+
+Joined_RegEx <- Years %>% left_join(Locations, by="Games") %>% select(Years, Locations, Gold, Silver, Bronze)
+
+View(Joined_RegEx)
+
+
+#VIEW NEW COLUMNS FOR OLYMPIC SABER
+
+#abbreviation <- OlympicMedals %>% mutate(gsub("[(FRA)]$", " ", Nation))
+#abbreviation
 
 ```
 
@@ -170,6 +187,7 @@ Total_Olympics %>% mutate(Average_Total_Medals_per_Year = Total/28)
 ```
 
 (F) .Rmd Line number(s) for use of user-defined functions:
+
 
 
 ##Data Visualization
