@@ -5,7 +5,7 @@ date: "4/6/20"
 output: html_notebook
 ---
 
-# Question: Throughout the history of fencing, which countries have had athletes that excelled in the sport in various years and earned medals in international tournaments, such as the FIE World Fencing Championships, and the Olympics?
+# Question: Throughout the history of fencing, which countries and which athletes within those countries excelled in the sport of fencing throughout time and earned medals in international tournaments, such as the FIE World Fencing Championships, and the Olympics?
 
 ## Setup:
 
@@ -122,8 +122,13 @@ View(Olympic_Saber)
 
 - (A) General Data Wrangling: 
 
+- Examples: filter, mutate, summarise, arrange, group_by, etc.
 
 ```{r}
+Gold_Olympics <- OlympicMedals %>% select(Nation, Gold) 
+Gold_FIE <- medalranks %>% select(Nation, Gold) 
+Total_Olympics <- OlympicMedals %>% select(Nation, Total)
+Total_FIE <- medalranks %>% select(Nation, Total)
 
 ```
 
@@ -148,6 +153,10 @@ View(Olympic_Saber)
 
 
 ```{r}
+#Olympic_Saber %>% group_by(Games) %>% mutate(gsub(^[....] ))
+
+abbreviation <- OlympicMedals %>% mutate(gsub("//(...//)", "", Nation))  
+abbreviation
 
 ```
 
@@ -156,10 +165,11 @@ View(Olympic_Saber)
 
 
 ```{r}
-
+Total_Games <- Olympic_Saber %>% summarise(total= sum(n())-1)
+Total_Olympics %>% mutate(Average_Total_Medals_per_Year = Total/28)
 ```
 
-
+(F) .Rmd Line number(s) for use of user-defined functions:
 
 
 ##Data Visualization
