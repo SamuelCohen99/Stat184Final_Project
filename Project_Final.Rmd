@@ -83,7 +83,7 @@ Olympic_S_Team
 Each case in this table are the Gold, Silver, and Bronze teams of an Olympic Games.
 
 
-##Data Wrangling 
+## Data Wrangling 
 
 ```{r}
 View(Sabers)
@@ -164,14 +164,26 @@ Total_Olympics %>% mutate(Average_Total_Medals_per_Year = Total/28)
 
 
 
-##Data Visualization
+## Data Visualization
 
+Below are carious forms of Data visualizations. The data used for this project has put a big limit on the required list. There is not many types of graphs to use this kind of information, so coming up with idea of the visualizations to use have been a bit of a challenge.
+
+### (A) .Rmd Line number(s) for use of mulitple different geoms:  
+
+Both plots below are plots of the same data, but different geoms were used. The first plot uses geom_jitter, and each dot is a case of the total medal count of each country, and how much of the total medals are gold medals. The second plot is uses geom_bar, and shows the number of total medals each country has won, and reorder by the number of gold medals. This data can be useful regarding the opening question because it is information on which countries has been the most dominant during the history of competitive fencing. Looking at the plots, it is no surprise to one of us that at least two or three European countries are on the top of the list.
+
+```{r}
+ggplot(data = medalranks, aes(x = Total, y = Gold)) +
+  geom_jitter()
+```
 
 ```{r}
 ggplot(data=medalranks,aes(x=reorder(Nation,Gold),y=Total ))+geom_bar(stat='identity',position='stack', width=.9) + theme(axis.text.x=element_text(angle=60,hjust=1)) 
 ```
 
-This plot is a bar graph representing the total medal count and ordered by the number of Gold medals each country has. (Not Summarised). I believe looking at the medal count of each country would be the good starting point to determine the most-dominant countries in the sport.
+### (B) .Rmd Line number(s) for use of multiple aesthetics: 
+
+The below plot is the Olympics Medals count of each country, with a couple of aesthetics added, such as a reorder, a fill, and a theme of the x-axis. This data is interesting when comparing this plot to the bar plot above because it is weird how the three countries with the top total medal counts are the same on both plots. 
 
 ```{r}
 OlympicMedals <- olympicslist[[12]] %>%
@@ -180,21 +192,20 @@ OlympicMedals <- olympicslist[[12]] %>%
 ggplot(data=OlympicMedals,aes(x=reorder(Nation,Total),y=Total,order=reorder(Gold,Gold),fill=Gold))+geom_bar(stat='identity',position='stack', width=.9) + theme(axis.text.x=element_text(angle=60,hjust=1)) 
 ```
 
-Here is another chart regarding the total count of Olympic medals with a fill order of gold medals. Similar start, and also plan to join the two tables together to get a grand total of medals. 
+### (D) .Rmd Line number(s) for use of leaflet maps: 
 
-To conclude, This feels like a good starting point to what I can investigate on. Within the next few weeks, I plan to construct various plots, such as a scatterplot of individual and team medals within various years to eventually find some kind of trend or pattern of which country has dominated the sport of fencing over the sport's history.
+The plot below is a global choropleth map, showing the total number of medals each country has won. This data is interesting because most of the countries that have been dominant in the FIE Tournament are grouped together in the map. Russia does have a good amount of medals, and everywhere else along just looks like a void.
 
-(A) .Rmd Line number(s) for use of mulitple different geoms:  
-
-(B) .Rmd Line number(s) for use of multiple aesthetics:  
-
-(C) .Rmd Line number(s) for use of layered graphics:  
-
-(D) .Rmd Line number(s) for use of leaflet maps: 
 ```{r}
 WorldMap(medalranks, key = Nation, fill = Total)
 ```
-(E) .Rmd Line number(s) for use of decision tree or dendogram results:    
+
+
+## To Conclude:
+
+Regarding all of the data, we have found that Italy has been the most dominant country in the FIE Tournament's history, and France the most dominant country during the Olympics' history. 
+
+To one of us, the results may be surprising, but to the other, who is a fencer, not at all. From experience, the United States does have a strong fencing environment, but some European countries do make our competition look like childs play. 
 
 
 
