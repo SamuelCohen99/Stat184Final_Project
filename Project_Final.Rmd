@@ -183,7 +183,7 @@ ggplot(data=medalranks,aes(x=reorder(Nation,Gold),y=Total ))+geom_bar(stat='iden
 
 ### (B) .Rmd Line number(s) for use of multiple aesthetics: 
 
-The below plot is the Olympics Medals count of each country, with a couple of aesthetics added, such as a reorder, a fill, and a theme of the x-axis. This data is interesting when comparing this plot to the bar plot above because it is weird how the three countries with the top total medal counts are the same on both plots. 
+The below plot is the Olympics Medals count of each country, with a couple of aesthetics added, such as a reorder, a fill, and a theme of the x-axis. This data is relevant to the research question for same reason the above plots are. This data is interesting when comparing this plot to the bar plot above because it is weird how the three countries with the top total medal counts are the same on both plots. 
 
 ```{r}
 OlympicMedals <- olympicslist[[12]] %>%
