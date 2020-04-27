@@ -111,6 +111,7 @@ To conclude, This feels like a good starting point to what I can investigate on.
 
 ##Data Wrangling 
 
+###Tables to Start With
 ```{r}
 View(Sabers)
 View(OlympicMedals)
@@ -120,16 +121,20 @@ View(Olympic_Saber)
 ```
 
 
-- (A) General Data Wrangling: 
+#### (A) General Data Wrangling: 
 
 - Examples: filter, mutate, summarise, arrange, group_by, etc.
 
 ```{r}
 Gold_Olympics <- OlympicMedals %>% select(Nation, Gold) 
 Gold_FIE <- medalranks %>% select(Nation, Gold) 
-Total_Olympics <- OlympicMedals %>% select(Nation, Total)
-Total_FIE <- medalranks %>% select(Nation, Total)
+Total_Olympics <- OlympicMedals %>% select(Nation, Total) 
+Total_FIE <- medalranks %>% select(Nation, Total) %>% arrange(desc(Total))
 
+rename(Sabers, Men)
+f <- Sabers %>% filter(Year > 1947) %>% rename(c("Men's individual" = "Men Sabers"))
+
+View(f)
 ```
 
 
@@ -149,6 +154,13 @@ View(Joined)
 
 ```{r}
 
+Olympics_Locations <- Joined_RegEx %>% select(Years, Locations) %>% spread(key= Years, value= Locations)
+
+Gold_Nations <- Gold_FIE %>% select(Nation, Gold) %>% filter(Gold > 9) %>% spread(key= Nation, value= Gold) 
+
+View(Gold_Nations)
+
+View(Olympics_Locations)
 ```
 
 
@@ -168,18 +180,10 @@ Locations <- Details %>% mutate(Locations = gsub("[0-9][0-9][0-9][0-9]", "", New
 Joined_RegEx <- Years %>% left_join(Locations, by="Games") %>% select(Years, Locations, Gold, Silver, Bronze)
 
 View(Joined_RegEx)
-
-
-#VIEW NEW COLUMNS FOR OLYMPIC SABER
-
-#abbreviation <- OlympicMedals %>% mutate(gsub("[(FRA)]$", " ", Nation))
-#abbreviation
-
 ```
 
 
 - (E) Reduction/Transformation: 
-
 
 ```{r}
 Total_Games <- Olympic_Saber %>% summarise(total= sum(n())-1)
@@ -187,6 +191,11 @@ Total_Olympics %>% mutate(Average_Total_Medals_per_Year = Total/28)
 ```
 
 (F) .Rmd Line number(s) for use of user-defined functions:
+
+```{r}
+
+  
+```
 
 
 
