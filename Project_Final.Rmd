@@ -83,9 +83,9 @@ Olympic_S_Team
 Each case in this table are the Gold, Silver, and Bronze teams of an Olympic Games.
 
 
-##Data Wrangling 
+###Data Wrangling 
 
-###Tables to Start With
+####Tables to Start With
 ```{r}
 View(Sabers)
 View(OlympicMedals)
@@ -97,37 +97,52 @@ View(Olympic_Saber)
 
 #### (A) General Data Wrangling: 
 
-- Examples: filter, mutate, summarise, arrange, group_by, etc.
+- We created Gold_Olympics and Gold_FIE in order to show case each nation and their Gold count according to two of our different data resources of Olympic medal counts and FIE (Fédération Internationale d'Escrime) international fencing tournament medal counts. I simply used select for these two. 
 
+- Next we created Total_Olympics and Total_FIE in order to make the same calculations but for a nation's total medal count and ordered these in descending order using the arrange function.  
+
+- Lastly we created a table called Locations_Count that counted the total number of times that each location has held the Olympics using group_by and summarise. 
+
+(A)
 ```{r}
+#First General Data Wrangle Set
 Gold_Olympics <- OlympicMedals %>% select(Nation, Gold) 
 Gold_FIE <- medalranks %>% select(Nation, Gold) 
+
+#Second General Data Wrangle Set 
 Total_Olympics <- OlympicMedals %>% select(Nation, Total) 
 Total_FIE <- medalranks %>% select(Nation, Total) %>% arrange(desc(Total))
 
-rename(Sabers, Men)
-f <- Sabers %>% filter(Year > 1947) %>% rename(c("Men's individual" = "Men Sabers"))
+#This part is from part (D) Reg Ex to show how we got the frame of "Joined_RegEx" and make sure to keep the document's integrity when running it. 
+Details <- Olympic_Saber %>% mutate(New= gsub("details", "", Games))
+Years <- Details %>% extractMatches("([0-9][0-9][0-9][0-9])", New) %>% mutate(Years= match1) %>% select(Games, Years)
+Locations <- Details %>% mutate(Locations = gsub("[0-9][0-9][0-9][0-9]", "", New))
+Joined_RegEx <- Years %>% left_join(Locations, by="Games") %>% select(Years, Locations, Gold, Silver, Bronze)
 
-View(f)
+#Last General Data Wrangle 
+Locations_Count <- Joined_RegEx %>% group_by(Locations) %>% summarise(Total= sum(n(Locations))) %>% arrange(desc(Total))
 ```
 
 
-- (B) Join Operation: 
+#### (B) Join Operation: 
 
+- For the join operation we joined medalranks and OlympicMedals by rank in order to see what the difference in total medal ranks was between countries competing in the Olympics versuses the FIE tournaments. 
 
+(B) 
 ```{r}
 JoinMedal <- medalranks %>% select(Rank, Nation)
 Joined <- JoinMedal %>% left_join(OlympicMedals %>% select(Rank, Nation), by= "Rank") 
 
-View(Joined)
+View(Joined) 
 ```
 
 
-- (C) Spread or Gather: 
+#### (C) Spread or Gather: 
 
+- We did two spreads here where we spread Joined_RegEx and Gold_FIE in order to see different years and which locations happened in those years. The Gold_Nations table is a spread of a Nation and how many gold medals they earned in FIE tournaments. 
 
+(C)
 ```{r}
-
 Olympics_Locations <- Joined_RegEx %>% select(Years, Locations) %>% spread(key= Years, value= Locations)
 
 Gold_Nations <- Gold_FIE %>% select(Nation, Gold) %>% filter(Gold > 9) %>% spread(key= Nation, value= Gold) 
@@ -138,17 +153,16 @@ View(Olympics_Locations)
 ```
 
 
-- (D) Reg Ex: 
+#### (D) Reg Ex: 
 
+- The regular expressions we used help clean up the column of Years that had both a location in it and also the word "details" thrown in there. First we got rid of details using mutate and gsub. Second, we extracted the year from the location. Lastly, we seperated the Location from the year and then collected them all together into a final cleaned up table with both Years and Locations seperated. 
 
+(D)
 ```{r}
-#
 Details <- Olympic_Saber %>% mutate(New= gsub("details", "", Games))
 
-#  
 Years <- Details %>% extractMatches("([0-9][0-9][0-9][0-9])", New) %>% mutate(Years= match1) %>% select(Games, Years)
 
-#
 Locations <- Details %>% mutate(Locations = gsub("[0-9][0-9][0-9][0-9]", "", New))
 
 Joined_RegEx <- Years %>% left_join(Locations, by="Games") %>% select(Years, Locations, Gold, Silver, Bronze)
@@ -157,20 +171,15 @@ View(Joined_RegEx)
 ```
 
 
-- (E) Reduction/Transformation: 
+#### (E) Reduction/Transformation: 
 
+- We creaed a reduction function by dividing the total medals by the number of years that the Olympics were held to see the average number of medals earned per year. 
+
+(E)
 ```{r}
 Total_Games <- Olympic_Saber %>% summarise(total= sum(n())-1)
 Total_Olympics %>% mutate(Average_Total_Medals_per_Year = Total/28)
 ```
-
-(F) .Rmd Line number(s) for use of user-defined functions:
-
-```{r}
-
-  
-```
-
 
 
 ##Data Visualization
