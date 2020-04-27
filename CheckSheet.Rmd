@@ -1,0 +1,18 @@
+---
+title: "Check Sheet"
+output: html_notebook
+---
+
+## Data Wrangling:
+
+A: lines 102-130
+B: lines 131-143
+C: lines 144-159
+D: lines 160-177
+E: lines 178-188
+
+## Visualizations:
+
+A: lines 193-205
+B: lines 206-216
+D: lines 217-225
