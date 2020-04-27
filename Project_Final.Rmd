@@ -1,7 +1,7 @@
 ---
 title: "Final Project - Fencing Champions"
 author: "Samuel Cohen, Alex Schweizer"
-date: "4/6/20"
+date: "4/26/20"
 output: html_notebook
 ---
 
@@ -62,8 +62,6 @@ Sabers
 
 *Each case in this table is the champion individuals or Country's teams in a given year.
 
-Within these tables, some variables I am planning to use are Country/Nation, count of each type of medal, and possibly the names of athletes.
-
 ## About the Second data source:
 
 The Second dataset contains charts of data of the champions of the men's fencing event of the Summer Olympics. all of this data is collected by the International Olympics Committee, or IOC for short; however, there is no provider on whom published the data onto Wikipedia. The results of each Olympic Games are collected as records of history. 
@@ -83,30 +81,6 @@ Olympic_S_Team
 ```
 
 Each case in this table are the Gold, Silver, and Bronze teams of an Olympic Games.
-
-Later on, I will be cleaning up the tables to remove some extra words of each case and such, like adding a comma in between each team member in a team table, as an example.
-
-Within the tables of this data source, I plan to play around the variables like the 3 medals, possibly by adding up each medal a country has won in a team or individual event.
-
-## Sample Plots and Summaries relating to Question:
-
-```{r}
-ggplot(data=medalranks,aes(x=reorder(Nation,Gold),y=Total ))+geom_bar(stat='identity',position='stack', width=.9) + theme(axis.text.x=element_text(angle=60,hjust=1)) 
-```
-
-This plot is a bar graph representing the total medal count and ordered by the number of Gold medals each country has. (Not Summarised). I believe looking at the medal count of each country would be the good starting point to determine the most-dominant countries in the sport.
-
-```{r}
-OlympicMedals <- olympicslist[[12]] %>%
-  filter(row_number() < 34)
-
-ggplot(data=OlympicMedals,aes(x=reorder(Nation,Total),y=Total,order=reorder(Gold,Gold),fill=Gold))+geom_bar(stat='identity',position='stack', width=.9) + theme(axis.text.x=element_text(angle=60,hjust=1)) 
-```
-
-Here is another chart regarding the total count of Olympic medals with a fill order of gold medals. Similar start, and also plan to join the two tables together to get a grand total of medals. 
-
-To conclude, This feels like a good starting point to what I can investigate on. Within the next few weeks, I plan to construct various plots, such as a scatterplot of individual and team medals within various years to eventually find some kind of trend or pattern of which country has dominated the sport of fencing over the sport's history.
-
 
 
 ##Data Wrangling 
@@ -201,7 +175,23 @@ Total_Olympics %>% mutate(Average_Total_Medals_per_Year = Total/28)
 
 ##Data Visualization
 
-- NOTE to SAM: We need to use these letters for these steps for each line in order to denote the step we are undergoing 
+
+```{r}
+ggplot(data=medalranks,aes(x=reorder(Nation,Gold),y=Total ))+geom_bar(stat='identity',position='stack', width=.9) + theme(axis.text.x=element_text(angle=60,hjust=1)) 
+```
+
+This plot is a bar graph representing the total medal count and ordered by the number of Gold medals each country has. (Not Summarised). I believe looking at the medal count of each country would be the good starting point to determine the most-dominant countries in the sport.
+
+```{r}
+OlympicMedals <- olympicslist[[12]] %>%
+  filter(row_number() < 34)
+
+ggplot(data=OlympicMedals,aes(x=reorder(Nation,Total),y=Total,order=reorder(Gold,Gold),fill=Gold))+geom_bar(stat='identity',position='stack', width=.9) + theme(axis.text.x=element_text(angle=60,hjust=1)) 
+```
+
+Here is another chart regarding the total count of Olympic medals with a fill order of gold medals. Similar start, and also plan to join the two tables together to get a grand total of medals. 
+
+To conclude, This feels like a good starting point to what I can investigate on. Within the next few weeks, I plan to construct various plots, such as a scatterplot of individual and team medals within various years to eventually find some kind of trend or pattern of which country has dominated the sport of fencing over the sport's history.
 
 (A) .Rmd Line number(s) for use of mulitple different geoms:  
 
@@ -209,8 +199,10 @@ Total_Olympics %>% mutate(Average_Total_Medals_per_Year = Total/28)
 
 (C) .Rmd Line number(s) for use of layered graphics:  
 
-(D) .Rmd Line number(s) for use of leaflet maps:  
-
+(D) .Rmd Line number(s) for use of leaflet maps: 
+```{r}
+WorldMap(medalranks, key = Nation, fill = Total)
+```
 (E) .Rmd Line number(s) for use of decision tree or dendogram results:    
 
 
